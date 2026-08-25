@@ -46,8 +46,8 @@ const deskMugTexture = new URL('../assets/deskMugBake.hdr', import.meta.url).hre
 const harvardFlagObject = new URL('../assets/harvardFlag.glb', import.meta.url).href;
 const harvardFlagTexture = new URL('../assets/harvardFlagBake.hdr', import.meta.url).href;
 
-// const wallImagesObject = new URL('../assets/wallImages.glb', import.meta.url).href;
-// const wallImagesTexture = new URL('../assets/wallImagesBake.hdr', import.meta.url).href;
+const wallImagesObject = new URL('../assets/wallImages3.glb', import.meta.url).href;
+const wallImagesTexture = new URL('../assets/wallImagesBake2.hdr', import.meta.url).href;
 
 const eiffelTowerObject = new URL('../assets/eiffel_tower.glb', import.meta.url).href;
 const eiffelTowerTexture = new URL('../assets/eiffelTowerBake.hdr', import.meta.url).href;
@@ -69,7 +69,7 @@ const modelAssets = [
     { model: deskJournalObject, texture: deskJournalTexture, uvChannel: 1, name: 'My Journal', bio: 'I\'ve been journaling regularly for over a decade. It helps me collect my thoughts and reflect on how to move forward.' },
     { model: deskMugObject, texture: deskMugTexture, uvChannel: 1, name: 'Tea Cup', bio: 'A tea cup I painted. It was constantly filled with chamomile tea to get me through long work nights. Watch this <a href="https://youtu.be/R6S3M9nhOBk?si=ZpZxpnFegMG6alfa" class="bio-link" target="_blank" rel="noopener">short stop-motion animation about it!</a>' },
     { model: harvardFlagObject, texture: harvardFlagTexture, uvChannel: 1, name: 'Harvard Pennant', bio: 'From its historic libraries to the lawn chairs in the Yard, Harvard became my home in a way I had never thought possible.' },
-    // { model: wallImagesObject, texture: wallImagesTexture, uvChannel: 1, name: 'Wall Photos', bio: 'Photos of friends and family.' },
+    { model: wallImagesObject, texture: wallImagesTexture, uvChannel: 1, name: 'Wall Photos', bio: 'Forever someone who likes to keep memories, you can frequently find me with a camera.' },
     { model: eiffelTowerObject, texture: eiffelTowerTexture, uvChannel: 0, name: 'Eiffel Tower Souvenir from Paris', bio: 'One day, I\'ll be at GOBELINS Paris studying computer graphics. For now, I\'ll keep on learning French on my own :)' },
     { model: vikingShipObject, texture: vikingShipTexture, uvChannel: 0, name: 'Viking Ship Snowglobe from Norway', bio: 'I studied abroad in Norway and fell in love with a culture I previously didn\'t know much about.' }
 ];
@@ -239,10 +239,30 @@ function showInfoBox(object, screenX, screenY) {
     requestAnimationFrame(() => {
         const boxWidth = infoBox.offsetWidth;
         const boxHeight = infoBox.offsetHeight;
-        let left = screenX + 16;
-        let top = screenY + 16;
-        if (left + boxWidth > window.innerWidth) left = screenX - boxWidth - 16;
-        if (top + boxHeight > window.innerHeight) top = screenY - boxHeight - 16;
+        const canvasRect = renderer.domElement.getBoundingClientRect();
+        const padding = 12;
+
+        let left = screenX + padding;
+        let top = screenY + padding;
+
+        const minLeft = canvasRect.left + padding;
+        const maxLeft = canvasRect.right - boxWidth - padding;
+        const minTop = canvasRect.top + padding;
+        const maxTop = canvasRect.bottom - boxHeight - padding;
+
+        left = Math.min(Math.max(left, minLeft), Math.max(minLeft, maxLeft));
+        top = Math.min(Math.max(top, minTop), Math.max(minTop, maxTop));
+
+        // If the box would overflow past the right or bottom edge, flip it to the left/top side
+        if (screenX + boxWidth + padding > canvasRect.right) {
+            left = screenX - boxWidth - padding;
+        }
+        if (screenY + boxHeight + padding > canvasRect.bottom) {
+            top = screenY - boxHeight - padding;
+        }
+
+        left = Math.min(Math.max(left, minLeft), Math.max(minLeft, maxLeft));
+        top = Math.min(Math.max(top, minTop), Math.max(minTop, maxTop));
 
         infoBox.style.left = `${left}px`;
         infoBox.style.top = `${top}px`;
