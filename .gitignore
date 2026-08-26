@@ -3,3 +3,5 @@ dist/
 .parcel-cache/
 src/assets/wallImages2.glb
 src/assets/wallImages2.glb
+.parcel-cache/
+dist/
