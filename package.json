@@ -8,7 +8,7 @@
   "scripts": {
     "start": "parcel src/index.html --public-url /",
     "build": "parcel build src/index.html --public-url /dorm-room3d/",
-    "deploy": "gh-pages -d dist",
+    "deploy": "npm run build && gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
