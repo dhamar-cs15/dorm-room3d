@@ -9,6 +9,18 @@
         <style>
             html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
             canvas { display: block; width: 100%; height: 100%; }
+
+            /* Invisible trigger strip along the very top of the viewport.
+               Hovering here (or the nav itself, once revealed) slides the nav down. */
+            .nav-hover-zone {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 24px;
+                z-index: 1000;
+            }
+
             nav {
                 position: fixed;
                 top: 0;
@@ -20,10 +32,18 @@
                 justify-content: space-between;
                 flex-wrap: wrap;
                 box-sizing: border-box;
-                background: rgba(231, 238, 245, 0.851);
+                background: rgba(255, 255, 255, 0.061);
                 backdrop-filter: blur(10px);
                 z-index: 1000;
+                transform: translateY(-100%);
+                transition: transform 0.35s ease;
             }
+
+            .nav-hover-zone:hover nav,
+            nav:hover {
+                transform: translateY(0);
+            }
+
             .logo {
                 width: 155px;
                 display: block;
@@ -31,7 +51,7 @@
             nav ul { margin: 0; padding: 0; }
             nav ul li { display: inline-block; list-style: none; margin: 5px 20px; }
             nav ul li a {
-                color: #282f5de4;
+                color: #f4f4f8f1;
                 font-family: 'Century Gothic', sans-serif;
                 font-size: 18px;
                 font-weight: 300;
@@ -50,19 +70,63 @@
             }
             nav ul li a:hover::after,
             nav ul li a:focus-visible::after { width: 100%; }
+
+            /* Back to Project Page button — always visible, independent of nav */
+            .back-button {
+                position: fixed;
+                top: 70px;
+                left: 16px;
+                z-index: 1001;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                padding: 8px 14px;
+                background: rgba(20, 20, 20, 0.7);
+                backdrop-filter: blur(6px);
+                color: #f0f0f0;
+                font-family: 'Century Gothic', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                text-decoration: none;
+                border-radius: 20px;
+                transition: background 0.2s ease;
+            }
+            .back-button:hover {
+                background: rgba(61, 130, 194, 0.85);
+            }
+            .back-button svg {
+                width: 14px;
+                height: 14px;
+                flex-shrink: 0;
+            }
+
             @media (max-width: 600px) {
                 nav { padding: 10px 5%; }
                 nav ul li { margin: 5px 8px; }
                 nav ul li a { font-size: 14px; }
+                .back-button {
+                    top: 70px;
+                    font-size: 13px;
+                    padding: 7px 12px;
+                }
             }
+
             .bio-link:link { color: rgb(182, 106, 0); font-weight: 600; transition: color 0.2s ease-in-out;}
         </style>
     </head>
     <body>
-        <div class="unsticky-nav">
+        <a class="back-button" href="https://dhamar-cs15.github.io/projects.html" aria-label="Back to project page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Back to Project Page
+        </a>
+
+        <div class="nav-hover-zone">
             <nav aria-label="Main navigation">
                 <a href="https://dhamar-cs15.github.io/index.html" aria-label="Home">
-                    <img src="https://dhamar-cs15.github.io/images/name_logo.png" alt="logo" class="logo">
+                    <img src="./assets/white_logo.png" alt="logo" class="logo">
                 </a>
                 <ul>
                     <li><a href="https://dhamar-cs15.github.io/index.html">Home</a></li>
@@ -72,7 +136,7 @@
                 </ul>
             </nav>
         </div>
-        
+
         <script src="./js/script.js" type="module"></script>
     </body>
 </html>

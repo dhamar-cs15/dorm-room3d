@@ -294,6 +294,114 @@ function hideInfoBox() {
     // orbit.update();
 }
 
+// --- Controls help panel ---
+const controlsPanel = document.createElement('div');
+controlsPanel.style.position = 'fixed';
+controlsPanel.style.maxWidth = '280px';
+controlsPanel.style.padding = '22px 26px';
+controlsPanel.style.background = 'rgba(252, 248, 235, 0.81)';
+controlsPanel.style.color = '#483408';
+controlsPanel.style.fontFamily = 'sans-serif';
+controlsPanel.style.fontSize = '13px';
+controlsPanel.style.lineHeight = '1.6';
+controlsPanel.style.borderRadius = '12px';
+controlsPanel.style.boxShadow = '0 8px 28px rgba(0,0,0,0.4)';
+controlsPanel.style.zIndex = 10000;
+controlsPanel.style.opacity = '1';
+controlsPanel.style.transition = 'opacity 0.4s ease, top 0.5s ease, left 0.5s ease, transform 0.5s ease';
+controlsPanel.innerHTML = `
+    <div style="font-weight:600; font-size:15px; margin-bottom:12px;">Welcome to my room!</div>
+    <div style="font-weight:300; margin-bottom:8px;"><strong>This model may take a few seconds to load. In the meantime, here's how to navigate around it using your trackpad:</div>
+    <div style="font-weight:500; margin-bottom:6px;"><strong>To rotate view:</strong> drag with one finger.</div>
+    <div style="font-weight:500; margin-bottom:6px;"><strong>To zoom in or out:</strong> scroll with two fingers.</div>
+    <div style="font-weight:500; margin-bottom:6px;"><strong>To pan horizontally/vertically: </strong> while holding shift, drag with one finger</div>
+    <div><strong>Click an object</strong> to see its details!</div>
+`;
+document.body.appendChild(controlsPanel);
+
+// Small toggle button, always visible, to bring the panel back
+const controlsToggle = document.createElement('div');
+controlsToggle.innerText = '?';
+controlsToggle.title = 'Show controls';
+controlsToggle.style.position = 'fixed';
+controlsToggle.style.left = '16px';
+controlsToggle.style.bottom = '16px';
+controlsToggle.style.width = '32px';
+controlsToggle.style.height = '32px';
+controlsToggle.style.borderRadius = '50%';
+controlsToggle.style.background = 'rgba(20,20,20,0.88)';
+controlsToggle.style.color = '#fff';
+controlsToggle.style.display = 'flex';
+controlsToggle.style.alignItems = 'center';
+controlsToggle.style.justifyContent = 'center';
+controlsToggle.style.fontFamily = 'sans-serif';
+controlsToggle.style.fontWeight = '600';
+controlsToggle.style.fontSize = '15px';
+controlsToggle.style.cursor = 'pointer';
+controlsToggle.style.zIndex = 10000;
+controlsToggle.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+controlsToggle.style.opacity = '0'; // hidden until model finishes loading
+controlsToggle.style.pointerEvents = 'none';
+document.body.appendChild(controlsToggle);
+
+let panelVisible = true;
+let hasLoadedOnce = false; // tracks whether we've transitioned out of the centered "loading" state
+
+function setPanelToCenter() {
+    controlsPanel.style.left = '50%';
+    controlsPanel.style.top = '50%';
+    controlsPanel.style.transform = 'translate(-50%, -50%)';
+}
+
+function setPanelToCorner() {
+    controlsPanel.style.left = '16px';
+    controlsPanel.style.top = '76%';
+    controlsPanel.style.transform = 'translateY(-50%)';
+}
+
+function hideControlsPanel() {
+    controlsPanel.style.opacity = '0';
+    controlsPanel.style.pointerEvents = 'none';
+    panelVisible = false;
+}
+
+function showControlsPanel() {
+    // Once the user manually toggles it back on, it should always show
+    // in the corner position, not center
+    setPanelToCorner();
+    controlsPanel.style.opacity = '1';
+    controlsPanel.style.pointerEvents = 'auto';
+    panelVisible = true;
+}
+
+controlsToggle.addEventListener('click', () => {
+    if (panelVisible) {
+        hideControlsPanel();
+    } else {
+        showControlsPanel();
+    }
+});
+
+// Start centered, for the initial loading state
+setPanelToCenter();
+
+// Call this once your model/assets finish loading
+function onModelLoadComplete() {
+    if (hasLoadedOnce) return;
+    hasLoadedOnce = true;
+
+    // Reveal the toggle button now that the scene is interactive
+    controlsToggle.style.opacity = '1';
+    controlsToggle.style.pointerEvents = 'auto';
+
+    // Move the panel to the corner, then fade it out after a beat
+    // so the user has a moment to read it in its new spot
+    setPanelToCorner();
+    setTimeout(() => {
+        if (panelVisible) hideControlsPanel();
+    }, 3000);
+}
+
 function findPickableAncestor(object) {
     let obj = object;
     while (obj && !obj.userData.bio) {
@@ -346,6 +454,9 @@ function onCanvasClick(event) {
 
 renderer.domElement.addEventListener('pointermove', onPointerMove);
 renderer.domElement.addEventListener('click', onCanvasClick);
+
+let loadedAssetCount = 0;
+const totalAssetCount = modelAssets.length;
 
 modelAssets.forEach((asset) => {
 
@@ -406,6 +517,11 @@ modelAssets.forEach((asset) => {
                 orbit.minAzimuthAngle = centerAzimuth - AZIMUTH_RANGE;
                 orbit.maxAzimuthAngle = centerAzimuth + AZIMUTH_RANGE;
                 orbit.update();
+            }
+
+            loadedAssetCount++;
+            if (loadedAssetCount === totalAssetCount) {
+                onModelLoadComplete();
             }
         });
     });
