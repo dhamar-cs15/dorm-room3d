@@ -86,20 +86,21 @@ renderer.toneMappingExposure = 1.0;
 
 const scene = new THREE.Scene();
 
-// axesHelper = new THREE.AxesHelper(2);
+// axesHelper = new THREE.AxesHelper(3);
 // scene.add(axesHelper);
 // gridHelper = new THREE.GridHelper(30, 30);
 // scene.add(gridHelper);
 
 // const coordHUD = document.createElement('div');
 // coordHUD.style.position = 'fixed';
-// coordHUD.style.left = '12px';
-// coordHUD.style.top = '12px';
+// coordHUD.style.left = '18px';
+// coordHUD.style.top = '18px';
 // coordHUD.style.padding = '8px 10px';
+// coordHUD.style.margin = '140px 120px';
 // coordHUD.style.background = 'rgba(0,0,0,0.6)';
 // coordHUD.style.color = '#ffd697';
 // coordHUD.style.fontFamily = 'monospace';
-// coordHUD.style.fontSize = '12px';
+// coordHUD.style.fontSize = '18px';
 // coordHUD.style.zIndex = 9999;
 // coordHUD.style.pointerEvents = 'none';
 // coordHUD.innerText = 'loading...';
@@ -530,8 +531,8 @@ modelAssets.forEach((asset) => {
 function animate(time) {
     orbit.update();
 
-    const p = camera.position;
-    const t = orbit.target;
+    // const p = camera.position;
+    // const t = orbit.target;
     // coordHUD.innerText = `cam: x:${p.x.toFixed(2)} y:${p.y.toFixed(2)} z:${p.z.toFixed(2)}\n` +
     //                      `target: x:${t.x.toFixed(2)} y:${t.y.toFixed(2)} z:${t.z.toFixed(2)}\n` +
     //                      `azimuth: ${orbit.getAzimuthalAngle().toFixed(3)} rad`;
