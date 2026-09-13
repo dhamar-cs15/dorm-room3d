@@ -207,11 +207,11 @@
       });
     }
   }
-})({"3OHon":[function(require,module,exports,__globalThis) {
+})({"8oo6L":[function(require,module,exports,__globalThis) {
 var global = arguments[3];
 var HMR_HOST = null;
 var HMR_PORT = null;
-var HMR_SERVER_PORT = 1234;
+var HMR_SERVER_PORT = 52469;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "439701173a9199ea";
 var HMR_USE_SSE = false;
@@ -876,19 +876,20 @@ document.body.appendChild(renderer.domElement);
 renderer.toneMapping = _three.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.0;
 const scene = new _three.Scene();
-// axesHelper = new THREE.AxesHelper(2);
+// axesHelper = new THREE.AxesHelper(3);
 // scene.add(axesHelper);
 // gridHelper = new THREE.GridHelper(30, 30);
 // scene.add(gridHelper);
 // const coordHUD = document.createElement('div');
 // coordHUD.style.position = 'fixed';
-// coordHUD.style.left = '12px';
-// coordHUD.style.top = '12px';
+// coordHUD.style.left = '18px';
+// coordHUD.style.top = '18px';
 // coordHUD.style.padding = '8px 10px';
+// coordHUD.style.margin = '140px 120px';
 // coordHUD.style.background = 'rgba(0,0,0,0.6)';
 // coordHUD.style.color = '#ffd697';
 // coordHUD.style.fontFamily = 'monospace';
-// coordHUD.style.fontSize = '12px';
+// coordHUD.style.fontSize = '18px';
 // coordHUD.style.zIndex = 9999;
 // coordHUD.style.pointerEvents = 'none';
 // coordHUD.innerText = 'loading...';
@@ -1237,8 +1238,8 @@ modelAssets.forEach((asset)=>{
 });
 function animate(time) {
     orbit.update();
-    const p = camera.position;
-    const t = orbit.target;
+    // const p = camera.position;
+    // const t = orbit.target;
     // coordHUD.innerText = `cam: x:${p.x.toFixed(2)} y:${p.y.toFixed(2)} z:${p.z.toFixed(2)}\n` +
     //                      `target: x:${t.x.toFixed(2)} y:${t.y.toFixed(2)} z:${t.z.toFixed(2)}\n` +
     //                      `azimuth: ${orbit.getAzimuthalAngle().toFixed(3)} rad`;
@@ -61230,6 +61231,6 @@ module.exports = module.bundle.resolve("vikingShipObj.eec66b3d.glb") + "?" + Dat
 },{}],"SwG0O":[function(require,module,exports,__globalThis) {
 module.exports = module.bundle.resolve("vikingFullBake.3bacdbf8.hdr") + "?" + Date.now();
 
-},{}]},["3OHon","2xGku"], "2xGku", "parcelRequire4bff", {}, "./", "/")
+},{}]},["8oo6L","2xGku"], "2xGku", "parcelRequire4bff", {}, "./", "/")
 
 //# sourceMappingURL=dorm-room3d.380419b9.js.map
